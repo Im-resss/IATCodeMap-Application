@@ -1,0 +1,131 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Simple Map</title>
+  <meta name="viewport" content="initial-scale=1.0">
+  <meta charset="utf-8">
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+  <script src="Resss.json"></script>
+  <script>
+  
+  
+  
+
+  function goMap(latt,lonn,btnId)
+  { 
+    map.setCenter(new google.maps.LatLng(latt,lonn));     
+
+  }   
+  var plat;
+  var plon ;
+  var i = 0 ;   
+  
+  function oynat (){       
+    plat=parseFloat(cikti[i].lat);         
+    plon = parseFloat(cikti[i].lon);
+    map.setCenter(new google.maps.LatLng(plat,plon));
+    i++;    
+    console.log(i);
+    setTimeout(oynat,3000);
+  }
+   function next() {
+      
+      plat=parseFloat(cikti[i].lat);         
+      plon = parseFloat(cikti[i].lon);
+      map.setCenter(new google.maps.LatLng(plat,plon));
+    } 
+    function prev() {
+      
+      if(i!=0){ i--;}
+      if(i!=0){ i--;}
+      
+      plat=parseFloat(cikti[i].lat);
+      plon=parseFloat(cikti[i].lon);
+      map.setCenter(new google.maps.LatLng(plat,plon));
+    }
+  
+  function play() {
+   oynat();
+   
+
+  }
+
+  var xhttp; 
+  var latt;
+  var lonn; 
+  var cikti;
+  var btnId=0;  
+  var i ;
+  var j ;
+  xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      cikti = JSON.parse(xhttp.responseText);    
+      for (var i = 0; i < cikti.length; i++) {
+       btnId++;
+       codee= cikti[i].code;
+       latt= cikti[i].lat;
+       lonn=cikti[i].lon;
+       tzz=cikti[i].tz;
+       var results;
+       
+       var results = document.getElementById('list');
+       results.innerHTML += codee+" "+latt+" " +lonn+" "+tzz+"<button id='"+btnId+"' onClick='goMap("+latt+","+lonn+","+btnId+")' >dsads</button>"+"<br/> ";};
+       
+
+     }
+   };
+   xhttp.open("GET", "data.json?a=78", true);
+   xhttp.setRequestHeader("Content-type","application/json",true);
+   xhttp.send();   
+   function goster()
+   {
+    var latim = parseFloat(document.getElementById('lati').value);
+    var longum = parseFloat(document.getElementById('long').value);  
+    map.setCenter(new google.maps.LatLng(latim,longum));
+  }
+  var map ;
+  function initMap() {
+    map = new google.maps.Map(document.getElementById('map'), {
+      center: {lat:22 , lng:22 },
+      zoom: 12
+    });
+  }
+  var i ;
+  </script> 
+  <style>     
+  #map { 
+    height: 85%;
+  }      
+  html, body {
+    height: 75%;
+    margin: 0;
+    padding: 0;
+  } 
+  </style>
+</head>
+<body>
+  <div id="map"></div>  
+  <div>
+    <input type="text" id="lati"/>
+    <input  type="text" id="long"/>
+    <input type="button" value="Gosteri" onClick="goster()" />
+  </div>  
+  <div >  
+    <button id ="prev" onClick="prev()">PREV</button>
+    <button id="play"  onClick="play()"> PLAY</button>
+    <button id="next"  onClick="next()">NEXT</button>
+  </div>
+  <div id="list">
+   
+  </div>
+   
+</select>
+<script type="text/javascript">
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD0VrHouTnBCp_GEBKJzLANMn3ql6aGy1k&callback=initMap" async defer></script>
+
+
+</body>
+</html>
